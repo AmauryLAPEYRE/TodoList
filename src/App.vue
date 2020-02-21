@@ -33,7 +33,6 @@ export default {
       )
       this.input = undefined;
       }
-      console.log(this.todos.filter(todo => todo.checked));
     },
     deleteTodo: function (todo) {
       let index = this.todos.indexOf(todo)
