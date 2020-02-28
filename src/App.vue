@@ -2,27 +2,37 @@
   <div id="app">
     <img src="./assets/logo.png">
     <div>
-      <h1>Todo List</h1>
-        <p>Tache en cours: {{ countNotChecked }}</p>
+      <h2>{{dateTime}}</h2>
+        <button v-on:click="deleteAllTodo(todos)">Clear List</button>
+        <p>{{ countNotChecked }} Current task(s)</p>
         <ul>
-          <li v-bind:class="{'checked' :todo.checked}" v-for="todo in todos">{{ todo.value }}<button  v-on:click="deleteTodo(todo)">X</button><input v-model="todo.checked" type="checkbox"></li>
+          <li v-bind:class="{'checked' :todo.checked}" v-for="todo in todos">
+            <input type="text" v-bind:value="todo.value"><button v-on:click="deleteTodo(todo)">X</button><input v-model="todo.checked" type="checkbox">
+          </li>
         </ul>
-      <input v-model="input" type="text"><button :disabled='isDisabled' v-on:click="addTodo">+</button>
+      <input placeholder="Type your task..." v-model="input" type="text"><button :disabled='isDisabled' v-on:click="addTodo">+</button>
     </div>
   </div>
 </template>
 
 <script>
+
+import moment from 'moment'
 import HelloWorld from './components/HelloWorld'
+
 export default {
   name: 'App',
   data() {
     return {
       todos: [],
       input: undefined,
+      date: '',
     }
   },
   methods: {
+     moment: function () {
+    return moment();
+    },
     addTodo: function () {
       if(this.input) {
         this.todos.push(
@@ -37,6 +47,9 @@ export default {
     deleteTodo: function (todo) {
       let index = this.todos.indexOf(todo)
       this.todos.splice(index, 1)
+    },
+    deleteAllTodo: function () {
+       this.todos = []
     }
   },
   mounted() {
@@ -48,6 +61,12 @@ export default {
     },
     countNotChecked: function() {
       return this.todos.filter(todo => todo.checked == false).length;
+    },
+    dateTime: function() {
+      return moment().format("dddd, Do"); 
+    },
+    time: function() {
+      return moment().format("h:mm");
     }
   },
   watch : {
